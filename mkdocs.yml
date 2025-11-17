@@ -1,0 +1,4 @@
+site_name: The Nuclear in Space Library
+site_url: https://nuclear-in-space.github.io/
+theme:
+  name: material
