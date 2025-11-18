@@ -1,8 +1,21 @@
+# Project info
 site_name: The Nuclear in Space Library
 site_url: https://nuclear-in-space.github.io/
 
+# Repository
+repo_name: Nuclear-in-Space/nuclear-in-space.github.io
+repo_url: https://github.com/Nuclear-in-Space/nuclear-in-space.github.io
+
+# Copyright
+copyright: Copyright &copy; 2025 SIGNuS
+
 theme:
   name: material
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  icon:
+    repo: fontawesome/brands/git-alt
+
   features:
     - search.suggest
     - search.highlight
@@ -13,16 +26,23 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+
   font:
     text: Roboto
     code: JetBrains Mono
+
+markdown_extensions: 
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 plugins:
   - search

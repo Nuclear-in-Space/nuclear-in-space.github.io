@@ -8,6 +8,9 @@ requires-python = ">=3.12"
 dependencies = []
 
 [dependency-groups]
+dev = [
+    "ruff>=0.14.5",
+]
 docs = [
     "mkdocs-material>=9.7.0",
 ]
