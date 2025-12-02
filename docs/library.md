@@ -1,3 +1,12 @@
+---
+hide:
+  - navigation
+  - toc
+  - path
+---
+
+# Full library
+
 | Title | Year  | URL   | DOI   | Group |
 | ----- | ----- | ----- | ----- | ----- |
 | Beryllium oxide utilized in nuclear reactors: Part I: Application history, thermal properties, mechanical properties, corrosion behavior and fabrication methods | 2022 |  | 10.1016/j.net.2022.07.017 | Beryllium |
