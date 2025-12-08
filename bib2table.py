@@ -1,6 +1,10 @@
-"""Bib2Table.
+from pathlib import Path
 
-Goal is to parse the bib file and create a markdown table. CI/CD
-actions will then be used to run the script and save the file in
-the docs whenever the bib file is updated.
-"""
+import pandas as pd
+from pybtex.database import parse_file
+
+file_path = Path("SIGNuS.bib").resolve()
+parsed = parse_file(file_path, "bibtex")
+
+for entry in parsed.entries.values():
+    print(entry.fields.get("url"))

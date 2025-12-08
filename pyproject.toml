@@ -5,7 +5,10 @@ description = "One of the world’s few libraries dedicated to space nuclear tec
 readme = "README.md"
 license = "LICENSE"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pandas>=2.3.3",
+    "pybtex>=0.25.1",
+]
 
 [project.optional-dependencies]
 dev = [
