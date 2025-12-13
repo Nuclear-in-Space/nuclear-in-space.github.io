@@ -10,7 +10,8 @@ Description of the site pages
 
     The entire reference library
 
-    [:octicons-arrow-right-24: Library](#)
+    [:octicons-arrow-right-24: Library](library.md)
+
 
 -   :fontawesome-brands-markdown:{ .lg .middle } __Additional resources__
 
@@ -20,6 +21,7 @@ Description of the site pages
 
     [:octicons-arrow-right-24: Additional](#)
 
+
 -   :material-format-font:{ .lg .middle } __Add to the library__
 
     ---
@@ -28,11 +30,12 @@ Description of the site pages
 
     [:octicons-arrow-right-24: Contribute](#)
 
+
 -   :material-scale-balance:{ .lg .middle } __Open Source, CC-BY-SA-4.0__
 
     ---
 
-    This library is licensed under CC-BY-SA-4.0 and available on [GitHub]
+    This library is licensed under CC-BY-SA-4.0
 
     [:octicons-arrow-right-24: License](#)
 
