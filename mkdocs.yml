@@ -47,6 +47,8 @@ markdown_extensions:
 
 plugins:
   - search
+  - awesome-nav
+  - include-markdown
   - tags
 
 extra_javascript:
