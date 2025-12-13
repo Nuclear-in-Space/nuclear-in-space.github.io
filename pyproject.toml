@@ -3,7 +3,7 @@ name = "nuclear-in-space-github-io"
 version = "0.1.0"
 description = "One of the world’s few libraries dedicated to space nuclear technology and related developments, serving as a knowledge-base."
 readme = "README.md"
-license = "LICENSE"
+license = { file = "LICENSE" }
 requires-python = ">=3.12"
 dependencies = [
     "pandas>=2.3.3",
