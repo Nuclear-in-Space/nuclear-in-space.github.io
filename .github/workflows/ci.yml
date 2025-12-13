@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "pyproject.toml"
 permissions:
   contents: write
 jobs:
@@ -28,5 +26,5 @@ jobs:
           path: ~/.cache 
           restore-keys: |
             mkdocs-material-
-      - run: pip install "nuclear-in-space-github-io[docs]"
+      - run: pip install .[docs]
       - run: mkdocs gh-deploy --force
