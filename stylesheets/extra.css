@@ -1,0 +1,8 @@
+/* Make Markdown-rendered tables span the full width */
+.md-typeset__table,
+.md-typeset table,
+.md-typeset table:not([class]) {
+  width: 100% !important;
+  min-width: 0;
+  table-layout: auto;  /* change to 'fixed' if you prefer fixed-cell widths */
+}
