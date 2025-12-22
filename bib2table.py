@@ -1,13 +1,48 @@
-import re
+from __future__ import annotations
+
+from collections import defaultdict
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pandas as pd
 from pybtex.backends.plaintext import Backend
 from pybtex.database import parse_file
 from pybtex.richtext import Text
 
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
-def parse_doi(doi: str | None) -> str | None:
+# Unicode string for a globe emoji
+URL_EMOJI = "\U0001f310"
+
+_BASE_DIRECTORY = Path(__file__).parent
+BIB_FILE_PATH = _BASE_DIRECTORY / "SIGNuS.bib"
+OUTPUT_FILE_PATH = _BASE_DIRECTORY / "docs/_library/table.md"
+
+# Add names to categories you would like to group into:
+#     - Materials
+#     - Mission Operations and Policy
+MATERIALS = {
+    "Beryllium",
+    "Calcium",
+    "Composite Moderators",
+    "Magnesium Oxide",
+    "Metal Hydrides",
+    "Radiators",
+    "Uranium Ceramics",
+    "Zirconium",
+}
+MISSION_OPERATIONS_AND_POLICY = {"Mission Operations", "Policy"}
+
+CUSTOM_GROUPINGS: dict[str, str] = {
+    **dict.fromkeys(MATERIALS, "Materials"),
+    **dict.fromkeys(MISSION_OPERATIONS_AND_POLICY, "Mission Operations & Policy"),
+}
+
+
+def parse_doi(
+    doi: str | None,
+) -> str | None:
     """
     Converts a DOI input (bare DOI or full URL) into a standardized DOI and URL.
 
@@ -40,46 +75,77 @@ def parse_doi(doi: str | None) -> str | None:
     return raw_doi, doi_link
 
 
-def clean_bib_title(title: str) -> str:
+def clean_bib_title(
+    title: str,
+) -> str:
     latex_text = Text.from_latex(title)
     return latex_text.render(Backend())
 
 
-def doi_uri_to_markdown_link(doi: str | None, uri: str | None) -> str:
+def doi_uri_to_markdown_link(
+    doi: str | None,
+    uri: str | None,
+) -> str:
     if doi is not None:
         PARSED_doi, PARSED_doi_link = parse_doi(doi)
-        return f"\U0001f310 [{PARSED_doi}]({PARSED_doi_link})"
+        return f"{URL_EMOJI} [{PARSED_doi}]({PARSED_doi_link})"
 
-    return f"\U0001f310 [URL link]({uri})"
+    return f"{URL_EMOJI} [URL link]({uri})"
 
 
-BIB_FILE_PATH = Path("SIGNuS.bib").resolve()
-OUTPUT_FILE_PATH = Path("docs/_library/table.md").resolve()
-PARSED = parse_file(BIB_FILE_PATH, "bibtex")
+def parse_groups(
+    groups: str,
+    custom_groupings: Mapping[str, str],
+) -> dict[str, str]:
+    if not groups:
+        return {}
 
-ROWS = []
+    result: dict[str, list[str]] = defaultdict(list)
 
-for entry in PARSED.entries.values():
-    raw_title = entry.fields.get("title")
-    raw_year = entry.fields.get("year")
-    raw_url = entry.fields.get("url")
-    raw_doi = entry.fields.get("doi")
-    raw_groups = entry.fields.get("groups")
+    for raw_item in groups.split(","):
+        item = raw_item.strip()
+        if not item:
+            continue
 
-    fixed_title = clean_bib_title(raw_title)
-    fixed_year = int(raw_year)
-    fixed_link = doi_uri_to_markdown_link(raw_doi, raw_url)
-    fixed_groups = re.sub(r"\s*(>|,)\s*", r"\1", raw_groups)
+        raw_category, _, raw_tag = item.partition(">")
+        category = raw_category.strip()
+        tag = raw_tag.strip()
 
-    ROWS.append(
-        {
-            "Title": fixed_title,
-            "Year": fixed_year,
-            "URL or DOI link": fixed_link,
-            "Group": fixed_groups,
-        }
-    )
+        if grouped_category := custom_groupings.get(category):
+            result[grouped_category].append(category)
+        elif tag:
+            result[category].append(tag)
+        else:
+            result.setdefault(category, [])
 
-df = pd.DataFrame(ROWS)
+    return dict(result)
 
-OUTPUT_FILE_PATH.write_text(df.to_markdown(index=False), encoding="utf-8")
+
+if __name__ == "__main__":
+    # rows = []
+    parsed_file = parse_file(BIB_FILE_PATH, "bibtex")
+
+    for entry in parsed_file.entries.values():
+        raw_title = entry.fields.get("title")
+        raw_year = entry.fields.get("year")
+        raw_url = entry.fields.get("url")
+        raw_doi = entry.fields.get("doi")
+        raw_groups = entry.fields.get("groups")
+
+        title = clean_bib_title(raw_title)
+        year = int(raw_year)
+        link = doi_uri_to_markdown_link(raw_doi, raw_url)
+        groups = parse_groups(raw_groups, CUSTOM_GROUPINGS)
+
+    #     rows.append(
+    #         {
+    #             "Title": title,
+    #             "Year": year,
+    #             "URL or DOI link": link,
+    #             "Group": groups,
+    #         }
+    #     )
+
+    # df = pd.DataFrame(rows)
+
+    # OUTPUT_FILE_PATH.write_text(df.to_markdown(index=False), encoding="utf-8")
