@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+import string
 from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -17,7 +19,6 @@ URL_EMOJI = "\U0001f310"
 
 _BASE_DIRECTORY = Path(__file__).parent
 BIB_FILE_PATH = _BASE_DIRECTORY / "SIGNuS.bib"
-OUTPUT_FILE_PATH = _BASE_DIRECTORY / "docs/_library/table.md"
 
 # Add names to categories you would like to group into:
 #     - Materials
@@ -34,10 +35,14 @@ MATERIALS = {
 }
 MISSION_OPERATIONS_AND_POLICY = {"Mission Operations", "Policy"}
 
-CUSTOM_GROUPINGS: dict[str, str] = {
-    **dict.fromkeys(MATERIALS, "Materials"),
-    **dict.fromkeys(MISSION_OPERATIONS_AND_POLICY, "Mission Operations & Policy"),
-}
+
+def format_filename(
+    input: str,
+) -> str:
+    valid_chars = f"-_.() {string.ascii_letters}{string.digits}"
+    filename = "".join(c for c in input if c in valid_chars)
+    filename = filename.replace(" ", "_").lower()  # I don't like spaces in filenames.
+    return filename.replace("__", "_")
 
 
 def parse_doi(
@@ -122,8 +127,13 @@ def parse_groups(
 
 
 if __name__ == "__main__":
-    # rows = []
+    CUSTOM_GROUPINGS: dict[str, str] = {
+        **dict.fromkeys(MATERIALS, "Materials"),
+        **dict.fromkeys(MISSION_OPERATIONS_AND_POLICY, "Mission Operations & Policy"),
+    }
+
     parsed_file = parse_file(BIB_FILE_PATH, "bibtex")
+    rows_by_category: dict[str, list[dict]] = defaultdict(list)
 
     for entry in parsed_file.entries.values():
         raw_title = entry.fields.get("title")
@@ -137,15 +147,31 @@ if __name__ == "__main__":
         link = doi_uri_to_markdown_link(raw_doi, raw_url)
         groups = parse_groups(raw_groups, CUSTOM_GROUPINGS)
 
-    #     rows.append(
-    #         {
-    #             "Title": title,
-    #             "Year": year,
-    #             "URL or DOI link": link,
-    #             "Group": groups,
-    #         }
-    #     )
+        for category, tags in groups.items():
+            rows_by_category[category].append(
+                {
+                    "Title": title,
+                    "Year": year,
+                    "URL or DOI link": link,
+                    "Tags": ", ".join(tags),
+                }
+            )
 
-    # df = pd.DataFrame(rows)
+    tables: dict[str, pd.DataFrame] = {}
 
-    # OUTPUT_FILE_PATH.write_text(df.to_markdown(index=False), encoding="utf-8")
+    for category, rows in rows_by_category.items():
+        df = pd.DataFrame.from_records(rows)
+
+        df = df.sort_values(
+            by=["Year"],
+            ascending=[False],
+            na_position="last",
+        )
+
+        tables[category] = df.reset_index(drop=True)
+
+    for category, df in tables.items():
+        output_file_path = (
+            _BASE_DIRECTORY / f"docs/_hidden_tables/{format_filename(category)}.md"
+        )
+        output_file_path.write_text(df.to_markdown(index=False), encoding="utf-8")
