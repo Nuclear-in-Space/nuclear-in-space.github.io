@@ -1,0 +1,119 @@
+colorScheme = "blowfish"
+defaultAppearance = "light"
+autoSwitchAppearance = true
+
+enableA11y = true
+enableSearch = true
+enableCodeCopy = true
+enableStructuredBreadcrumbs = false
+
+replyByEmail = false
+
+disableImageOptimization = false
+disableImageOptimizationMD = false
+disableTextInHeader = false
+
+hotlinkFeatureImage = false
+fingerprintAlgorithm = "sha512"
+firebase = { }
+fathomAnalytics = { }
+umamiAnalytics = { }
+selineAnalytics = { }
+buymeacoffee = { }
+verification = { }
+rssnext = { }
+advertisement = { }
+enableStyledScrollbar = true
+
+[header]
+    layout = "fixed-fill"
+
+[favicon]
+    icon = "favicon.ico"
+    svg = ""
+    apple = ""
+    shortcut = "favicon.ico"
+
+[footer]
+    showMenu = true
+    showCopyright = true
+    showThemeAttribution = true
+    showAppearanceSwitcher = true
+    showScrollToTop = true
+
+[homepage]
+    layout = "page" # valid options: page, profile, hero, card, background, custom
+    showRecent = false
+    # showRecentItems = 5
+    showMoreLink = false
+    showMoreLinkDest = "/posts/"
+    cardView = true
+    cardViewScreenWidth = false
+    layoutBackgroundBlur = true
+    disableHeroImageFilter = false # only used when layout equals hero
+
+[article]
+    showDate = false
+    showViews = false
+    showLikes = false
+    showDateOnlyInArticle = false
+    showDateUpdated = false
+    showAuthor = true
+    showHero = false
+    layoutBackgroundBlur = true
+    layoutBackgroundHeaderSpace = true
+    showBreadcrumbs = false
+    showDraftLabel = true
+    showEdit = false
+    editAppendPath = true
+    seriesOpened = false
+    showHeadingAnchors = true
+    showPagination = true
+    invertPagination = false
+    showReadingTime = true
+    showTableOfContents = true
+    showTaxonomies = false
+    showCategoryOnly = false
+    showAuthorsBadges = false
+    showWordCount = false
+    showZenMode = true
+    editURL = ""
+
+[list]
+    showHero = true
+    heroStyle = "background" # valid options: basic, big, background, thumbAndBackground
+    layoutBackgroundBlur = true
+    layoutBackgroundHeaderSpace = false
+    showBreadcrumbs = false
+    showSummary = false
+    showViews = false
+    showLikes = false
+    showTableOfContents = true
+    showCards = true
+    orderByWeight = false
+    groupByYear = false
+    cardView = true
+    cardViewScreenWidth = false
+    constrainItemsWidth = false
+
+[sitemap]
+    excludedKinds = [ "taxonomy", "term" ]
+
+[taxonomy]
+    showTermCount = true
+    showHero = false
+    showBreadcrumbs = false
+    showViews = false
+    showLikes = false
+    showTableOfContents = false
+    cardView = false
+
+[term]
+    showHero = false
+    showBreadcrumbs = false
+    showViews = false
+    showLikes = false
+    showTableOfContents = true
+    groupByYear = false
+    cardView = false
+    cardViewScreenWidth = false
