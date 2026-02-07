@@ -1,6 +1,8 @@
 colorScheme = "blowfish"
 defaultAppearance = "light"
 autoSwitchAppearance = true
+customCSS = ["css/custom.css"]
+customJS = ["js/tablesort.js"]
 
 enableA11y = true
 enableSearch = true

@@ -11,31 +11,36 @@
 # ordered by weight from lowest to highest.
 
 [[main]]
-  name = "About"
+  name = "Library"
+  pageRef = "library/_index"
+  weight = 30
+
+[[main]]
+  name = "Conference"
+  pageRef = "conference/_index"
   weight = 20
+
+[[main]]
+  name = "About"
+  weight = 10
 
     [[main]]
     name = "About us"
     parent = "About"
     pageRef = "about"
-    weight = 20
+    weight = 10
 
     [[main]]
     name = "Our Vision"
     parent = "About"
     pageRef = "vision"
-    weight = 20
+    weight = 10
 
     [[main]]
     name = "Governance"
     parent = "About"
     pageRef = "governance"
-    weight = 20
-
-[[main]]
-  name = "Library"
-  pageRef = "library/_index"
-  weight = 10
+    weight = 10
 
 # -- Footer Menu --
 # The footer menu is displayed at the bottom of the page, just before

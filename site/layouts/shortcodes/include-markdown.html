@@ -1,0 +1,7 @@
+{{/* layouts/shortcodes/include-markdown.html */}}
+{{ $src := .Get 0 }}
+{{ $res := resources.Get $src }}
+{{ if not $res }}
+  {{ errorf "File not found in assets/: %s" $src }}
+{{ end }}
+{{ $res.Content | markdownify }}
