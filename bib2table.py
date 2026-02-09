@@ -172,6 +172,6 @@ if __name__ == "__main__":
 
     for category, df in tables.items():
         output_file_path = (
-            _BASE_DIRECTORY / f"docs/_hidden_tables/{format_filename(category)}.md"
+            _BASE_DIRECTORY / f"site/assets/tables/{format_filename(category)}.md"
         )
         output_file_path.write_text(df.to_markdown(index=False), encoding="utf-8")
