@@ -1,0 +1,21 @@
+backend:
+  name: github
+  repo: Nuclear-in-Space/nuclear-in-space.github.io
+  branch: refactor/hugo-migration
+  base_url: https://sveltia-cms-auth.nalin-gupta3142.workers.dev/
+
+media_folder: /static/media
+public_folder: /media
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    format: "yaml"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: true }
+      - { label: "Body", name: "body", widget: "markdown" }
