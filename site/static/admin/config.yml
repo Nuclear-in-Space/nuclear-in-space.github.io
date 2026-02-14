@@ -8,7 +8,7 @@ backend:
 
 # i18n configuration: use separate root folders for each locale
 i18n:
-  structure: multiple_root_folders
+  structure: multiple_folders
   locales: [en, fr]
   default_locale: en
 
@@ -16,11 +16,31 @@ media_folder: "site/static/media"
 public_folder: "/media"
 
 collections:
-  - name: pages
-    label: Pages
-    folder: "site/content/{{locale}}"
+  - name: main-pages
+    label: Main Pages
+    folder: "site/content/"
     create: true
     delete: true
+    i18n: true
     fields:
-      - { label: Title, name: title, widget: string, i18n: true}
-      - { label: Body, name: body, widget: markdown, i18n: true}
+      - { label: Title, name: title, widget: string, i18n: true }
+      - { label: Body, name: body, widget: markdown, i18n: true }
+    index_file:
+      i18n: true
+      fields: # Fields for the index file
+        - { name: title, label: Title, i18n: true }
+        - { name: body, label: Body, widget: markdown, i18n: true }
+  - name: main-pages
+    label: Main Pages
+    folder: "site/content/"
+    create: true
+    delete: true
+    i18n: true
+    fields:
+      - { label: Title, name: title, widget: string, i18n: true }
+      - { label: Body, name: body, widget: markdown, i18n: true }
+    index_file:
+      i18n: true
+      fields: # Fields for the index file
+        - { name: title, label: Title, i18n: true }
+        - { name: body, label: Body, widget: markdown, i18n: true }

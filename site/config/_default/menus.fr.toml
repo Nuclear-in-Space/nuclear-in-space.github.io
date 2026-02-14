@@ -1,0 +1,58 @@
+# -- Menu principal --
+# Le menu principal est affiché dans l’en-tête en haut de la page.
+# Les paramètres acceptés sont : name, pageRef, page, url, title, weight.
+#
+# La configuration la plus simple du menu consiste à fournir :
+#   name = Le nom à afficher pour ce lien du menu
+#   pageRef = L’identifiant de la page ou de la section vers laquelle créer un lien
+#
+# Par défaut, le menu est classé par ordre alphabétique. Cela peut être
+# modifié en fournissant une valeur weight. Le menu sera alors
+# classé par weight de la plus faible à la plus élevée.
+
+[[main]]
+  name = "Bibliothèque"
+  pageRef = "library/_index"
+  weight = 30
+
+[[main]]
+  name = "Conférence"
+  pageRef = "conference/_index"
+  weight = 20
+
+[[main]]
+  name = "À propos"
+  weight = 10
+
+    [[main]]
+    name = "À propos de nous"
+    parent = "À propos"
+    pageRef = "about"
+    weight = 10
+
+    [[main]]
+    name = "Notre vision"
+    parent = "À propos"
+    pageRef = "vision"
+    weight = 10
+
+    [[main]]
+    name = "Gouvernance"
+    parent = "À propos"
+    pageRef = "governance"
+    weight = 10
+
+# -- Menu de pied de page --
+# Le menu de pied de page est affiché en bas de la page, juste avant
+# la mention de copyright. Configurez-le comme le menu principal ci-dessus.
+
+
+[[footer]]
+  name = "Politique de confidentialité"
+  pageRef = "privacy"
+  weight = 20
+
+[[footer]]
+  name = "Contactez-nous"
+  pageRef = "contact"
+  weight = 20
