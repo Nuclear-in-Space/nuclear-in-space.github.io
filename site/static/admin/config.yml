@@ -4,7 +4,7 @@ backend:
   name: github
   repo: Nuclear-in-Space/nuclear-in-space.github.io
   branch: refactor/hugo-migration
-  base_url: https://sveltia-cms-auth.nalin-gupta3142.workers.dev/
+  base_url: https://sveltia-cms-auth.nalin-gupta3142.workers.dev/callback
 
 # i18n configuration: use separate root folders for each locale
 i18n:
