@@ -18,7 +18,7 @@ public_folder: "/media"
 collections:
   - name: main-pages
     label: Main Pages
-    folder: "site/content/"
+    folder: "site/content"
     create: true
     delete: true
     i18n: true
@@ -26,6 +26,38 @@ collections:
       - { label: Title, name: title, widget: string, i18n: true }
       - { label: Body, name: body, widget: markdown, i18n: true }
     index_file:
+      i18n: true
+      fields: # Fields for the index file
+        - { name: title, label: Title, i18n: true }
+        - { name: body, label: Body, widget: markdown, i18n: true }
+
+  - name: conference-pages
+    label: Conference Pages
+    folder: "site/content"
+    path: "conference/{{slug}}"
+    create: true
+    delete: true
+    i18n: true
+    fields:
+      - { label: Title, name: title, widget: string, i18n: true }
+      - { label: Body, name: body, widget: markdown, i18n: true }
+    index_file:
+      label: Conference Index
+      i18n: true
+      fields: # Fields for the index file
+        - { name: title, label: Title, i18n: true }
+        - { name: body, label: Body, widget: markdown, i18n: true }
+
+  - name: library-pages
+    label: Library Pages
+    folder: "site/content"
+    path: "library/{{slug}}"
+    i18n: true
+    fields:
+      - { label: Title, name: title, widget: string, i18n: true }
+      - { label: Body, name: body, widget: markdown, i18n: true }
+    index_file:
+      label: Library Index
       i18n: true
       fields: # Fields for the index file
         - { name: title, label: Title, i18n: true }
