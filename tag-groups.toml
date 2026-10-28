@@ -1,0 +1,43 @@
+# Companion file for bib2table.py
+# ---------------------------------
+# Usually the bib2table script simply uses the "groups" field in the
+# bib file to create tags in the site pages. But one may want to combine
+# several tags into a single table. This file facilitates this.
+# 
+# Create entries
+# --------------
+# [categories.<GROUPED_CATEGORY_NAME>]
+# name = "<CUSTOM NAME OF THE GROUPING>"
+# tags = [
+#   "tag1",
+#   "tag2",
+#   ...
+# ]
+# 
+# IMPORTANT:
+# Please ensure tags are unique to a grouping. Do not add the
+# same tag to multiple groupings. It will not work.
+#
+# Once the file is changed to satisfaction, run bib2table script as
+# bib2table.py --groupings tag-groups.toml --output docs/_hidden_tables
+# and it will create the relevant tables in 
+
+[categories.materials]
+name = "Materials"
+tags = [
+    "Beryllium",
+    "Calcium",
+    "Composite Moderators",
+    "Magnesium Oxide",
+    "Metal Hydrides",
+    "Radiators",
+    "Uranium Ceramics",
+    "Zirconium",
+]
+
+[categories.mission_operations_and_policy]
+name = "Mission Operations & Policy"
+tags = [
+    "Mission Operations",
+    "Policy",
+]

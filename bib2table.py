@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import argparse
 import string
+import tomllib
 from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -16,23 +18,48 @@ if TYPE_CHECKING:
 # Unicode string for a globe emoji
 URL_EMOJI = "\U0001f310"
 
-_BASE_DIRECTORY = Path(__file__).parent
-BIB_FILE_PATH = _BASE_DIRECTORY / "SIGNuS.bib"
 
-# Add names to categories you would like to group into:
-#     - Materials
-#     - Mission Operations and Policy
-MATERIALS = {
-    "Beryllium",
-    "Calcium",
-    "Composite Moderators",
-    "Magnesium Oxide",
-    "Metal Hydrides",
-    "Radiators",
-    "Uranium Ceramics",
-    "Zirconium",
-}
-MISSION_OPERATIONS_AND_POLICY = {"Mission Operations", "Policy"}
+def parse_args() -> argparse.Namespace:
+    _base_dir = Path(__file__).parent
+
+    parser = argparse.ArgumentParser(description="Convert a BibTeX file into markdown tables!")
+    parser.add_argument(
+        "--bib",
+        type=Path,
+        required=False,
+        default=_base_dir / "SIGNuS.bib",
+        help="Path to the .bib file"
+    )
+    parser.add_argument(
+        "--groupings",
+        type=Path,
+        required=False,
+        default=_base_dir / "tag-groups.toml",
+        help="Path to the .toml file containing custom groupings"
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        required=False,
+        default=_base_dir / "docs/_hidden_tables/",
+        help="Folder to write tables to"
+    )
+    return parser.parse_args()
+
+def load_custom_groupings(filepath: str | Path) -> dict[str,str]:
+    with open(filepath, "rb") as file:
+        data = tomllib.load(file)
+
+    groupings = {}
+
+    for category in data["categories"].values():
+        for tag in category["tags"]:
+            if tag in groupings:
+                msg = f"Tag {tag!r} is in both {groupings[tag]!r} and {category['name']!r}"
+                raise ValueError(msg)
+            groupings[tag] = category["name"]
+
+    return groupings
 
 
 def format_filename(
@@ -46,7 +73,7 @@ def format_filename(
 
 def parse_doi(
     doi: str | None,
-) -> str | None:
+) -> tuple[str, str] | None:
     """
     Converts a DOI input (bare DOI or full URL) into a standardized DOI and URL.
 
@@ -90,11 +117,12 @@ def doi_uri_to_markdown_link(
     doi: str | None,
     uri: str | None,
 ) -> str:
-    if doi is not None:
-        PARSED_doi, PARSED_doi_link = parse_doi(doi)
-        return f"{URL_EMOJI} [{PARSED_doi}]({PARSED_doi_link})"
-
-    return f"{URL_EMOJI} [URL link]({uri})"
+    if doi and doi.strip():
+        parsed_doi, parsed_doi_link = parse_doi(doi)
+        return f"{URL_EMOJI} [{parsed_doi}]({parsed_doi_link})"
+    if uri and uri.strip():
+        return f"{URL_EMOJI} [URL link]({uri})"
+    return "N/A"
 
 
 def parse_groups(
@@ -124,27 +152,26 @@ def parse_groups(
 
     return dict(result)
 
+def main():
+    io_paths = parse_args()
+    io_paths.output.mkdir(parents=True, exist_ok=True)
 
-if __name__ == "__main__":
-    CUSTOM_GROUPINGS: dict[str, str] = {
-        **dict.fromkeys(MATERIALS, "Materials"),
-        **dict.fromkeys(MISSION_OPERATIONS_AND_POLICY, "Mission Operations & Policy"),
-    }
+    bib_file_path = io_paths.bib
+    custom_groupings = load_custom_groupings(io_paths.groupings)
 
-    parsed_file = parse_file(BIB_FILE_PATH, "bibtex")
-    rows_by_category: dict[str, list[dict]] = defaultdict(list)
+    parsed_file = parse_file(bib_file_path, "bibtex")
+    rows_by_category = defaultdict(list)
 
     for entry in parsed_file.entries.values():
-        raw_title = entry.fields.get("title")
-        raw_year = entry.fields.get("year")
-        raw_url = entry.fields.get("url")
-        raw_doi = entry.fields.get("doi")
-        raw_groups = entry.fields.get("groups")
+        fields = entry.fields
+
+        raw_title = fields.get("title")
+        raw_year = fields.get("year")
 
         title = clean_bib_title(raw_title)
-        year = int(raw_year)
-        link = doi_uri_to_markdown_link(raw_doi, raw_url)
-        groups = parse_groups(raw_groups, CUSTOM_GROUPINGS)
+        year = int(raw_year) if raw_year.isdigit() else None
+        link = doi_uri_to_markdown_link(fields.get("doi"), fields.get("url"))
+        groups = parse_groups(fields.get("groups"), custom_groupings)
 
         for category, tags in groups.items():
             rows_by_category[category].append(
@@ -156,21 +183,20 @@ if __name__ == "__main__":
                 }
             )
 
-    tables: dict[str, pd.DataFrame] = {}
-
     for category, rows in rows_by_category.items():
         df = pd.DataFrame.from_records(rows)
 
+        df["Year"] = df["Year"].astype("Int64")
         df = df.sort_values(
             by=["Year"],
             ascending=[False],
             na_position="last",
         )
+        df["Year"] = df["Year"].astype("string").fillna("")
 
-        tables[category] = df.reset_index(drop=True)
-
-    for category, df in tables.items():
-        output_file_path = (
-            _BASE_DIRECTORY / f"docs/_hidden_tables/{format_filename(category)}.md"
-        )
+        output_file_path = io_paths.output / f"{format_filename(category)}.md"
         output_file_path.write_text(df.to_markdown(index=False), encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()
