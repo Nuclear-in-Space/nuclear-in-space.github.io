@@ -1,0 +1,91 @@
+[project]
+# --------------------------------------------
+# Site information
+# --------------------------------------------
+site_name = "The Nuclear in Space Library"
+site_url = "https://nuclear-in-space.github.io/"
+copyright = "Copyright &copy; 2025 SIGNuS"
+
+# --------------------------------------------
+# Repository information
+# --------------------------------------------
+repo_name = "Nuclear-in-Space/nuclear-in-space.github.io"
+repo_url = "https://github.com/Nuclear-in-Space/nuclear-in-space.github.io"
+
+extra_css = [
+  "stylesheets/extra.css",
+]
+
+extra_javascript = [
+  "https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js",
+  "javascripts/tablesort.js",
+]
+
+exclude_docs = """
+/_hidden_tables/
+"""
+
+# ---------------------------------------------------------------------------
+# Theme
+# ---------------------------------------------------------------------------
+[project.theme]
+logo = "assets/logo.png"
+favicon = "assets/favicon.png"
+features = [
+  "search.suggest",
+  "search.highlight",
+]
+
+[project.theme.font]
+text = "Roboto"
+code = "JetBrains Mono"
+ 
+[project.theme.icon]
+repo = "fontawesome/brands/git-alt"
+
+# Palette toggle for automatic mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+# Palette toggle for light mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+# Palette toggle for dark mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+# ---------------------------------------------------------------------------
+# Markdown extensions
+# ---------------------------------------------------------------------------
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+md_in_html = {}
+tables = {}
+
+[project.markdown_extensions.pymdownx]
+blocks.caption = {}
+caret = {}
+mark = {}
+tilde = {}
+
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji" 
+
+# ---------------------------------------------------------------------------
+# Plugins
+# --------------------------------------------
+[project.plugins.awesome-nav]
+[project.plugins.include-markdown]
+[project.plugins.search]
+[project.plugins.tags]
