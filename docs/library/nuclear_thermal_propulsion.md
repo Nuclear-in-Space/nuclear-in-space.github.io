@@ -2,8 +2,7 @@
 hide:
   - toc
 ---
-Nuclear Thermal Propulsion
---------------------------
+# Nuclear Thermal Propulsion
 
 Nuclear Thermal Propulsion Description.
 

@@ -2,8 +2,7 @@
 hide:
   - toc
 ---
-Thermal
--------
+# Thermal
 
 Thermal Description.
 

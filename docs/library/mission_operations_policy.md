@@ -2,8 +2,7 @@
 hide:
   - toc
 ---
-Mission Operations and Policy
------------------------------
+# Mission Operations and Policy
 
 Mission Operations and Policy Description.
 

@@ -2,8 +2,7 @@
 hide:
   - toc
 ---
-Structural
-----------
+# Structural
 
 Structural Description.
 

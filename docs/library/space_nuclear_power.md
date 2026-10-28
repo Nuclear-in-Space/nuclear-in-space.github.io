@@ -2,8 +2,7 @@
 hide:
   - toc
 ---
-Space Nuclear Power
--------------------
+# Space Nuclear Power
 
 Space Nuclear Power Description.
 

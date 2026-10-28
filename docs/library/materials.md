@@ -2,8 +2,7 @@
 hide:
   - toc
 ---
-Nuclear & Space Materials
--------------------------
+# Nuclear & Space Materials
 
 Materials Description.
 
